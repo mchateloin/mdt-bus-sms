@@ -1,209 +1,163 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
+
+<!doctype html>
+<html>
+<head>
     <meta charset="utf-8">
-    <title>Text My Bus (MIA) | By Code for Miami - Codigo para Miami</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="An SMS system that enables users in Miami, Florida, to receive texts with upcoming bus times for stops.">
-    <link rel="shortcut icon" href="favicon.ico" />
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/js/bootstrap.min.js"></script>
-    
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Text My Bus (MIA) - By Code for Miami</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-  </head>
 
-  <body>
+    <script type="text/javascript">
 
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-30955754-1']);
+        _gaq.push(['_trackPageview']);
 
-  <!-- fork me banner, top right
-  ================================================== -->
-  <a class="forkme" href="https://github.com/Code-for-Miami/mdt-bus-sms?source=c" target="_blank">
-      <img style="position: absolute; top: 0; right: 0; border: 0; z-index: 100;"
-           src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
 
+    </script>
 
-    <!-- Carousel - only using one at the moment
-    ================================================== -->
-    <div class="carousel slide">
-      <div class="carousel-inner">
+</head>
+<body>
+<div class="wrapper">
+    <header>
+        <h1 class="header">Text My Bus (MIA)</h1>
+        <p class="header">An SMS system that lets users text an ID number of a bus stop and receive a message with its upcoming times.</p>
+        <ul class="button-group">
+            <li><a class="buttons github" href="https://github.com/Code-for-Miami/mdt-bus-sms">View On GitHub</a></li>
+        </ul>
+        <ul class="menu">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="https://github.com/Code-for-Miami/mdt-bus-sms/issues">Issues</a></li>
+        </ul>
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/Code-for-Miami">Code for Miami</a></p>
+    </header>
+    <section>
+        <h1>Why?</h1>
+        <p>The goal of Text My Bus is to provide easy access to updated bus schedules for low-income individuals and other Miami-Dade County residents and visitors who rely on public transportation for commuting and getting around the county. When users text the ID number of his or her bus stop and receive a message with upcoming bus times for that stop. </p>
 
-        <div class="item active">
-          <img src="images/carousel/Miami1.jpg" alt="MacArthur Causeway | Miami" />
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>Text My Bus (MIA)</h1>
-              <p class="lead">
-                  An SMS system that enables users in Miami, Florida, to text the ID number of their bus stops and
-                  receive a message with upcoming bus times for that stop.
-              </p>
-            </div>
-          </div>
-        </div>
- 
+        <h2>Demo-ing the prototype</h2>
 
-      </div>
-    </div><!-- /.carousel -->
+            <ul>
+                <li>SMS in the Twilio test phone number: (786) 629-6468</li>
+                <li>SMS should be in the format: "BUS [ROUTE SHORT NAME] AT [STOP LOCATION ID]"</li>
+                <li>For example: "BUS 101 AT 2884" (The 101/A route at 17th St &amp; Meridian Ave, Miami Beach, FL)</li>
+            </ul>
+        <h2>
+                <a name="finding-out-stop-location-ids-for-internal-use-mostly" class="anchor" href="#finding-out-stop-location-ids-for-internal-use-mostly"><span class="octicon octicon-link"></span></a>Finding out stop location IDs (for internal use mostly)</h2>
 
-    
-    
-    <div class="container marketing clearleft">
+            <ul>
+                <li>SMS in the Twilio test phone number: (786) 629-6468</li>
+                <li>SMS in format: "STOP AT [INTERSECTION ADDRESS, CITY, STATE]" will return a list of stops near that intersection along with the calculated direction of the street they're on</li>
+                <li>Example: "STOP AT 17 ST &amp; MEDIRIAN AVE, MIAMI BEACH, FL" returns #2884 Eastbound.</li>
+                <li>SMS in format: "STOP [LOCATION ID]" will return a Google Maps link centered on the coordinates of the location ID</li>
+                <li>Example: "STOP 2884" will return <a href="https://maps.google.com/maps?q=25.792236,-80.136955&amp;num=1&amp;t=m&amp;z=19">https://maps.google.com/maps?q=25.792236,-80.136955&amp;num=1&amp;t=m&amp;z=19</a>
+                </li>
+                <li>You may also browse to <a href="http://smsbus.illogicalsystems.com/locate-stops.html?phrase=17+st+%26+meridian+ave%2C+miami+beach%2C+fl">http://smsbus.illogicalsystems.com/locate-stops.html?phrase=17+st+%26+meridian+ave%2C+miami+beach%2C+fl</a> and play with the search box.</li>
+            </ul><h2>
+                <a name="filling-out-the-sticker" class="anchor" href="#filling-out-the-sticker"><span class="octicon octicon-link"></span></a>Filling out the Sticker</h2>
 
+            <p><a href="https://github-camo.global.ssl.fastly.net/00c4f842e04105029066dc837f5fb72e80dc4db5/687474703a2f2f6661726d332e737461746963666c69636b722e636f6d2f323836302f31303638313830313532345f393232313735316264345f6d2e6a7067" target="_blank"><img src="https://github-camo.global.ssl.fastly.net/00c4f842e04105029066dc837f5fb72e80dc4db5/687474703a2f2f6661726d332e737461746963666c69636b722e636f6d2f323836302f31303638313830313532345f393232313735316264345f6d2e6a7067" alt="Txt Sticker" style="max-width:100%;"></a>
+                The instructions below explain how to find your bus stop number and your bus number for TEXTMYBUS.</p>
 
-    <!-- Marketing messaging and featurettes
-    ================================================== -->
-    <!-- Wrap the rest of the page in another container to center all the content. -->
+            <ol>
+                <li>Go to <a href="http://smsbus.illogicalsystems.com/locate-stops.html">http://smsbus.illogicalsystems.com/locate-stops.html</a>
+                </li>
+                <li>Enter the address to an intersection &amp; press search. For example:
 
+                    <ul>
+                        <li>sw 137 ave &amp; sw 56 st, miami, fl</li>
+                        <li>Try to always use the city &amp; state with commas.
 
+                            <ul>
+                                <li>Works well:
 
-      <!-- Three columns of text below the carousel -->
-  <!--    <div class="row">
+                                    <ul>
+                                        <li>alhambra cir &amp; ponce de leon blvd, coral gables, fl</li>
+                                    </ul>
+                                </li>
+                                <li>Does not work well:
 
+                                    <ul>
+                                        <li>alhambra cir &amp; ponce de leon blvd coral gables fl</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>Select the pin that represents your bus stop</li>
+                <li>Write down the bus stop number associated with the pin.</li>
+                <li>Find your sticker.</li>
+                <li>Write your bus number where it says BUS</li>
+                <li>Write the stop number where it says AT</li>
+                <li>Stick your bus sticker on your stop.</li>
+            </ol><h2>
+                <a name="what-if-my-bus-number-is-a-letter" class="anchor" href="#what-if-my-bus-number-is-a-letter"><span class="octicon octicon-link"></span></a>WHAT IF MY BUS NUMBER IS A LETTER?</h2>
 
+            <p>All lettered buses have numbers. Here is a list of numbers associated with bus </p>
 
-        <div class="span4">
-          <img src="images/captain.png" alt="CfA Brigade Captain" />
-          <h2>Come To Our Meetups</h2>
-          <p>A casual <a href="http://www.meetup.com/Code-for-Miami/">meetup</a>, usually weekly, meeting at the LAB Miami in Wynwood.</p>
-          <p><a class="btn" href="#meetup">View details &raquo;</a></p>
-        </div>&lt;!&ndash; /.span4 &ndash;&gt;
+            <p>routes:</p>
 
-        <div class="span4">
-          <img src="images/community.png" alt="Community" />
-          <h2>Join Online Discussions</h2>
-          <p><a href="https://groups.google.com/forum/#!forum/code-for-miami">
-            An open conversation online</a> about what we're doing now and what's next. .</p>
-          <p><a class="btn" href="#groups">View details &raquo;</a></p>
-        </div>&lt;!&ndash; /.span4 &ndash;&gt;
+            <ul>
+                <li>A – 101</li>
+                <li>B – 102</li>
+                <li>C – 103</li>
+                <li>E – 105</li>
+                <li>G – 107 </li>
+                <li>H – 108</li>
+                <li>J – 110</li>
+                <li>L - 112</li>
+                <li>M – 113</li>
+                <li>S – 119</li>
+            </ul><h2>
+                <a name="how-to-set-this-up" class="anchor" href="#how-to-set-this-up"><span class="octicon octicon-link"></span></a>How to set this up</h2>
 
-        <div class="span4">
-          <img src="images/cfa_logo_greyscale.png" alt="Code for America" />
-          <h2>See Our Inspiration</h2>
-          <p><a href="http://codeforamerica.org/">Code for America</a> is the organization that helped inspire
-            many of us that we can change our City.
-          </p>
-          <p><a class="btn" href="#cfa">View details &raquo;</a></p>
-        </div>&lt;!&ndash; /.span4 &ndash;&gt;
-      </div>&lt;!&ndash; /.row &ndash;&gt;
+            <ul>
+                <li>Create a web server, basic LAMP stack (Requires PHP 5.3 and above)</li>
+                <li>Clone the repo </li>
+                <li>Download composer (package manager)
+                    curl -sS <a href="https://getcomposer.org/installer">https://getcomposer.org/installer</a> | php
+                    php composer.phar install </li>
+                <li>Create a test Twilio account and set up the SMS hook to the web server, pointing to answer-sms.php</li>
+                <li>Config file is in /config/config.php.dist - you put in the twilio send number, sid and auth_token. Don't forget to config your MySQL database in the db section accordingly. We parse the data from the feeds array under "gtfs_exchange".</li>
+                <li>In the cli there's a command-line PHP script called update_gtfs.php - you can run this manually or set up a cron job.</li>
+                <li>The transit data is in GTFS format: <a href="http://developers.google.com/transit/gtfs/reference">http://developers.google.com/transit/gtfs/reference</a> - We converted the GTFS formatted file into SQL in the data folder, under gtfs_tables.sql</li>
+            </ul><h2>
+                <a name="open-issues--future-feature-requests" class="anchor" href="#open-issues--future-feature-requests"><span class="octicon octicon-link"></span></a>Open issues &amp; Future Feature Requests</h2>
 
+            <ul>
+                <li>Right now, the bus IDs are in the GTFS data and - unfortunately - not part of the bus stop sign. As a workaround, we are playing around with taking a bus line and assigning a simple code for a stop. We are focusing on the South Beach Local (123) - Route ID #12782 in GTFS.</li>
+                <li>Translations in Spanish and Haitian Creole</li>
+                <li>Flesh out more the stop locator &amp; maybe not use SMS to find location IDs.</li>
+            </ul><h2>
+                <a name="contributors" class="anchor" href="#contributors"><span class="octicon octicon-link"></span></a>Contributors</h2>
 
-      &lt;!&ndash; START THE FEATURETTES &ndash;&gt;
-
- <hr class="featurette-divider">
-
-      <div class="featurette">
-        <img class="featurette-image pull-left" style="padding-bottom: 75px" src="images/noun_project_756_citizen.png" alt="Citizen" />
-        <h2 class="featurette-heading">Works In Progress. <br/><span class="muted">Some Of Our 2013 Projects.</span></h2>
-        <p class="lead">
-          <ul class="lead">
-            <li>
-              Miami Wiki
-              (<a href="http://miamiwiki.org/">site</a>)
-              
-           </li>
-           <li>
-	         TextMyBusMIA
-	         (<a href="https://github.com/Code-for-Miami/mdt-bus-sms">code</a>)
-           </li>
-		   <li>
-			FL Legislature Tracker
-			(<a href="http://code-for-miami.github.io/legislature-tracker">demo</a>)
-			(<a href="https://github.com/Code-for-Miami/legislature-tracker">code</a>)
-			</li>
-		   <li>
-			iam1of.us
-			(<a href="http://code-for-miami.github.io/iam1of.us">demo</a>)
-			(<a href="https://github.com/Code-for-Miami/iam1of.us">code</a>)
-		   </li>
-       <li>
-      Dude Where's My Bike?
-      (<a href="http://code-for-miami.github.io/dude-wheres-my-bike">demo</a>)
-      (<a href="https://github.com/Code-for-Miami/dude-wheres-my-bike">code</a>)
-       </li>	
-       <li>
-      CodeForMiami.org
-      (<a href="https://github.com/Code-for-Miami/code-for-miami.github.io">code</a>)
-       </li>  
-		
-            
-          </ul>
-        </p>
-      </div>
-
-  <hr class="featurette-divider">
-
-      <div class="featurette">
-        <a href="http://brigade.codeforamerica.org/">
-          <img name="cfa" id="cfa" class="featurette-image pull-right" src="images/cfa_brigade_logo.png" alt="Code for America Brigade" />
-        </a>
-        <h2 class="featurette-heading">Want To Help Your City? <span class="muted">Good, we could use your help.</span></h2>
-        <p class="lead">We are a <a href="http://brigade.codeforamerica.org/">Code for America Brigade</a>,
-          which means we're volunteers that contribute
-          our talents toward improving the way our local governments and community organizations use the web.
-          Brigade is about action and you're here because you are someone who takes action.
-          <a href="http://brigade.codeforamerica.org/pages/activities">See what kind of things brigades do</a>, or watch the
-            <a href="http://codeforamerica.org/2012/03/08/jennifer-pahlka-at-ted-video/">
-              inspirational TED talk given by Jennifer Pahlka, the founder of Code for America.</a></p>
-      </div>
-
-      <hr class="featurette-divider">
-
-      <div class="featurette">
-        <a href="http://www.meetup.com/Code-for-Miami/">
-          <img name="meetup" id="meetup" class="featurette-image pull-left" src="images/meetup.jpg" alt="Meetup.com" />
-          </a>
-        <h2 class="featurette-heading">We Meet Often. <span class="muted">Come Join Us.</span></h2>
-        <p class="lead">Check out<a href="http://www.meetup.com/Code-for-Miami/">
-          our Meetup</a> to learn more about events and projects. We meet at 7 p.m. on Monday nights at <a href="http://thelabmiami.com/">the LAB Miami</a> in Wynwood.</p>
-      </div>
-
-      <hr class="featurette-divider">
-
-      <div class="featurette">
-        <a href="https://groups.google.com/a/codeforamerica.org/forum/#!forum/code-for-miami">
-          <img name="groups" id="groups" class="featurette-image pull-right" src="images/google_groups.png" alt="Google Groups" />
-        </a>
-        <h2 class="featurette-heading">We Discuss Things Online. <span class="muted">Join and Introduce Yourself.</span></h2>
-        <p class="lead">
-          Can't make it to a meetup?  No problem. We collaborate on projects, ask for help, and post wins
-          to our <a href="https://groups.google.com/forum/?fromgroups#!forum/code-for-miami">Code for Miami forum</a> where you can get new posts in email and reply. We welcome anyone to sign-up... you might just see something you're interested in helping with. </p>
-      </div>
-
-      <hr class="featurette-divider">
-
-      <div class="featurette">
-        <img name="contact" id="contact" class="featurette-image pull-right" src="">
-        <h2 class="featurette-heading">Want Even More Info? <span class="muted">Contact Us.</span></h2>
-        <p class="lead">Our Brigade Captains are Ernie Hsiung (<a href="mailto:ehsiung@codeforamerica.org">ehsiung at codeforamerica.org</a> ) and Rebekah Monson (<a href="mailto:rmonson@codeforamerica.org">rmonson at codeforamerica.org</a> ) and we want to hear from you!</p>
-      </div>
-
-      <hr class="featurette-divider">-->
-
-      <!-- /END THE FEATURETTES -->
+            <ul>
+                <li>Adrian Cardenas (<a href="mailto:arcardenas@gmail.com">arcardenas@gmail.com</a>)</li>
+                <li>Aleyda Mejia (<a href="mailto:aleydak.mejia@gmail.com">aleydak.mejia@gmail.com</a>)</li>
+                <li>Ernie Hsiung (<a href="mailto:e@erniehsiung.com">e@erniehsiung.com</a>)</li>
+                <li>Lisa Cawley (Copywriter, e-mail redacted)</li>
+            </ul>
 
 
-      <!-- FOOTER -->
-      <footer>
-        <!--<p class="pull-right"><a href="#">Back to top</a></p>-->
-        <p>Built and Maintained by Code for Miami. Site Design Based on <a href="http://twitter.github.com/bootstrap">Bootstrap</a>, Some Images Provided by <a href="http://thenounproject.com">The Noun Project</a> and <a href="http://aerostylaz.deviantart.com/gallery/?q=miami">Aerostylaz</a>.</p>
-      </footer>
-
-    </div><!-- /.container -->
-  </body>
-<script src="js/bootstrap-tooltip.js"></script>
-<script>  	
-
-  $(document).ready(function(){	
-	
-	    $('.carousel').carousel({
-	        interval: 5000
-	    });
-
-    });
-
-</script>
+    </section>
+    <footer>
+        <p><small>Hosted on <a href="http://pages.github.com/">GitHub Pages</a> using the <a href="https://github.com/broccolini/dinky">Dinky theme</a></small></p>
+    </footer>
+</div>
+<!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+</body>
 </html>
